@@ -17,13 +17,15 @@ import java.sql.*;
 /**
  * Servlet implementation class sensorToDB
  */
+
+
 @WebServlet("/MotorServerDB")
 public class MotorServerDB extends HttpServlet {
 	
-		private static final long serialVersionUID = 1L;
+	   private static final long serialVersionUID = 1L;
 
 	   Gson gson = new Gson();
-        
+       
        Connection conn = null;
 	   Statement stmt;
 
