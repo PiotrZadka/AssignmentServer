@@ -97,12 +97,9 @@ public class MotorServerDB extends HttpServlet {
 				PrintWriter out = response.getWriter();
 				updateSensorTable(oneSensor);
 				out.close();
-			} // endif sensorJsonString not null
-		} // end if getdata is null
-	    else {  // Retrieve and return data (JSON format)
-	    	   // Code to retrieve data
-	    	}
-
+			} 
+		} 
+	    else {}
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -110,29 +107,29 @@ public class MotorServerDB extends HttpServlet {
 	    doGet(request, response);
 	}
 
-private void updateSensorTable(MotorData oneSensor){
-	try {
-		// Create the INSERT statement from the parameters
-		// set time inserted to be the current time on database server
-		String updateSQL = 
-	     	"insert into sensorusage(tagId, attempt, timeinserted) " +
-	     	"values('"+oneSensor.getTagId()      + "','" +
-	     	           oneSensor.getAttempt()  + "'," +
-	     	           "now());";
-	     	           
-	        System.out.println("DEBUG: Update: " + updateSQL);
-	        stmt.executeUpdate(updateSQL);
-	        System.out.println("DEBUG: Update successful ");
-	} catch (SQLException se) {
-		// Problem with update, return failure message
-	    System.out.println(se);
-        System.out.println("\nDEBUG: Update error - see error trace above for help. ");
-	    return;
-	}
-
-	// all ok,  return
-	return;
-}	
+	// Update database with insert query
+	private void updateSensorTable(MotorData oneSensor){
+		try {
+			// Create the INSERT statement from the parameters
+			// set time inserted to be the current time on database server
+			String updateSQL = 
+		     	"insert into sensorusage(tagId, attempt, timeinserted) " +
+		     	"values('"+oneSensor.getTagId()      + "','" +
+		     	           oneSensor.getAttempt()  + "'," +
+		     	           "now());";
+		     	           
+		        System.out.println("DEBUG: Update: " + updateSQL);
+		        stmt.executeUpdate(updateSQL);
+		        System.out.println("DEBUG: Update successful ");
+		} catch (SQLException se) {
+			// Problem with update, return failure message
+		    System.out.println(se);
+	        System.out.println("\nDEBUG: Update error - see error trace above for help. ");
+		    return;
+		}
+		// all ok,  return
+		return;
+	}	
 	
 	
 }

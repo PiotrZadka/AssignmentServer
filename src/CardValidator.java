@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+//Card Validation servlet 
+
 @WebServlet("/CardValidator")
 public class CardValidator extends HttpServlet {
 	   private static final long serialVersionUID = 1L;
@@ -50,26 +52,30 @@ public class CardValidator extends HttpServlet {
  
 	  }
 	  
+	// Data received by GET method from "cardReaderController" method "ValidateCard"
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    response.setStatus(HttpServletResponse.SC_OK);
 	    
 	    String getdata = request.getParameter("getdata");
 	    if (getdata == null){
 			String sensorJsonString = request.getParameter("validationData");
-			
 			if (sensorJsonString != null) {
 				cardReaderData readerJson = gson.fromJson(sensorJsonString, cardReaderData.class);
 				System.out.println("RECIEVED FROM= "+readerJson.getTagId()+" "+readerJson.getReaderId());
 				
+				// If card if valid send success response
 				if(checkCardinDB(readerJson)) {
 					sendResponseSuccess(response);
-				}else {
+				}
+				// otherwise send fail response
+				else {
 					sendResponseFail(response);
 				}
 			}
 		}
 	}
 	
+	// Making contact with database to check if data sent from RFID card is existing in DB
 	private Boolean checkCardinDB(cardReaderData readerJson){
 		ResultSet resultSet = null;
 		try {
