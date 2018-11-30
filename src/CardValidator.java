@@ -60,54 +60,42 @@ public class CardValidator extends HttpServlet {
 	    if (getdata == null){
 			String sensorJsonString = request.getParameter("validationData");
 			if (sensorJsonString != null) {
-				cardReaderData readerJson = gson.fromJson(sensorJsonString, cardReaderData.class);
-				System.out.println("RECIEVED FROM= "+readerJson.getTagId()+" "+readerJson.getReaderId());
-				
+				cardReaderData reader = gson.fromJson(sensorJsonString, cardReaderData.class);
 				// If card if valid send success response
-				if(checkCardinDB(readerJson)) {
-					sendResponseSuccess(response);
-				}
-				// otherwise send fail response
-				else {
-					sendResponseFail(response);
-				}
+				reader = checkCardinDB(reader);
+				String readerJson = gson.toJson(reader);
+				response.setContentType("application/json");  
+			    PrintWriter out = response.getWriter();
+			    out.println(readerJson);
+			    out.close();
 			}
 		}
 	}
 	
 	// Making contact with database to check if data sent from RFID card is existing in DB
-	private Boolean checkCardinDB(cardReaderData readerJson){
+	private cardReaderData checkCardinDB(cardReaderData readerJson){
 		ResultSet resultSet = null;
+		System.out.print("CardName =>"+readerJson.getTagId()+" CardReaderID =>"+readerJson.getReaderId()+" MotorID =>"+readerJson.getMotorId());
 		try {
-			String updateSQL = "select * from cards where cardId = '"+readerJson.getTagId()+"' and sensorId = '"+readerJson.getReaderId()+"';";
+			String updateSQL = "select * from cards where cardId = '"+readerJson.getTagId()+"';";
 		    System.out.println(updateSQL);          
 		        System.out.println("DEBUG: Statement: " + updateSQL);
 		        resultSet = stmt.executeQuery(updateSQL);
 		        if(resultSet.next()) {
 		        	System.out.println("DEBUG: Select statement successful");
+		        	readerJson.setReaderId(resultSet.getString("sensorId"));
+		        	readerJson.setMotorId(resultSet.getString("motorId"));
 		        	stmt.execute(updateSQL);
-		        	return true;
+		        	
+		        	//Check what has been returned from DB
+		        	System.out.print("CardName =>"+readerJson.getTagId()+" CardReaderID =>"+readerJson.getReaderId()+" MotorID =>"+readerJson.getMotorId());
 		        }else {
-		        	return false;
+		        	return readerJson;
 		        }
 		} catch (SQLException se) {
 		    System.out.println(se);
 	        System.out.println("\nDEBUG: Update error - see error trace above for help. ");
-		    return false;
 		}
+		return readerJson;
 	}	
-	
-	private void sendResponseSuccess(HttpServletResponse response) throws IOException{
-		  response.setContentType("text/plain");  
-	      PrintWriter out = response.getWriter();
-	      out.println("success");
-	      out.close();
-	}
-	
-	private void sendResponseFail(HttpServletResponse response) throws IOException{
-		  response.setContentType("text/plain");  
-	      PrintWriter out = response.getWriter();
-	      out.println("fail");
-	      out.close();
-	}
 }

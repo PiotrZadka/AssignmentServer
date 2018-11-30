@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import java.util.*;
 import java.io.*;
 import java.sql.*;
 
@@ -70,14 +69,13 @@ public class MotorServerDB extends HttpServlet {
 	
     public MotorServerDB() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    response.setStatus(HttpServletResponse.SC_OK);
 	    // Declare a SensorData object to hold the incoming data
-	    MotorData oneSensor = new MotorData("unknown", "unknown");
+	    MotorData oneSensor = new MotorData("unknown","unknown","unknown");
 	    
 	    // Check to see whether the client is requesting data or sending it
 	    String getdata = request.getParameter("getdata");
@@ -113,9 +111,10 @@ public class MotorServerDB extends HttpServlet {
 			// Create the INSERT statement from the parameters
 			// set time inserted to be the current time on database server
 			String updateSQL = 
-		     	"insert into sensorusage(tagId, attempt, timeinserted) " +
-		     	"values('"+oneSensor.getTagId()      + "','" +
-		     	           oneSensor.getAttempt()  + "'," +
+		     	"insert into sensorusage(tagId, motorId, attempt, timeinserted) " +
+		     	"values('"+oneSensor.getTagId()+ "','" +
+		     			   oneSensor.getMotorId()+ "','" +
+		     	           oneSensor.getAttempt()+ "'," +
 		     	           "now());";
 		     	           
 		        System.out.println("DEBUG: Update: " + updateSQL);

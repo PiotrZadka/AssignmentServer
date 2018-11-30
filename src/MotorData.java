@@ -1,12 +1,12 @@
-
-
 public class MotorData {
 	String tagId;
+	String motorId;
 	String attempt;
 	
-	MotorData(String tagId, String attempt){
+	MotorData(String tagId,String motorId, String attempt){
 		this.tagId = tagId;
 		this.attempt = attempt;
+		this.motorId = motorId;
 	}
 
 	public String getTagId() {
@@ -23,6 +23,14 @@ public class MotorData {
 
 	public void setAttempt(String attempt) {
 		this.attempt = attempt;
+	}
+	
+	public String getMotorId() {
+		return motorId;
+	}
+
+	public void setMotorId(String motorId) {
+		this.motorId = motorId;
 	}
 	
 }
