@@ -45,11 +45,8 @@ public class MotorServerDB extends HttpServlet {
 			// get a connection with the user/pass
 	        try {
 	            conn = DriverManager.getConnection(url, user, password);
-				  System.out.println("Sensor to DB  server is up and running\n");	
-				  System.out.println("Upload sensor data with http://localhost:8080/AssignmentServer/MotorServerDB?sensorname=somesensorname&sensorvalue=somesensorvalue");
-				  System.out.println("View last sensor reading at  http://localhost:8080/AssignmentServer/MotorServerDB?getdata=true\n\n");		  
-
-	            // System.out.println("DEBUG: Connection to database successful.");
+				  System.out.println("Sensor to DB  server is up and running\n");	  
+				  System.out.println("DEBUG: Connection to database successful.");
 	            stmt = conn.createStatement();
 	        } catch (SQLException se) {
 	            System.out.println(se);

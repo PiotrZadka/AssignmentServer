@@ -88,7 +88,8 @@ public class CardValidator extends HttpServlet {
 		        	stmt.execute(updateSQL);
 		        	
 		        	//Check what has been returned from DB
-		        	System.out.print("CardName =>"+readerJson.getTagId()+" CardReaderID =>"+readerJson.getReaderId()+" MotorID =>"+readerJson.getMotorId());
+		        	System.out.println("Checking what data is being returned from Database");
+		        	System.out.println("CardName =>"+readerJson.getTagId()+" CardReaderID =>"+readerJson.getReaderId()+" MotorID =>"+readerJson.getMotorId());
 		        }else {
 		        	return readerJson;
 		        }
